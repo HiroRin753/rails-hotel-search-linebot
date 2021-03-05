@@ -3,11 +3,14 @@ class LineBotController < ApplicationController
   protect_from_forgery except: [:callback]
 
   def callback
+    body = request.body.read
+    # request.bodyとすることでリクエストのメッセージボディだけを参照することができる。request.bodyはStringIOクラスという、文字列を操作するための様々なメソッドを提供しているクラスの値になっている。このままではメッセージボディの内容を解析できないので、StringIOクラスのreadメソッドを用いて、文字列として読み出し、body変数に代入している。
+
 
   end
 
   private
-  
+
   # Line::Bot::Clientクラスをインスタンス化することで、メッセージの解析や返信などの機能を使うことができるようになる
   def client
     @client ||= Line::Bot::Client.new { |config|  #||=は左辺がnilやfalseの場合、右辺を代入するという意味
