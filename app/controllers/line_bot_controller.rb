@@ -4,6 +4,10 @@ class LineBotController < ApplicationController
 
   def callback
     body = request.body.read
+    signature = request.env['HTTP_X_LINE_SIGNATURE']
+     unless client.validate_signature(body, signature)
+       return head :bad_request
+     end
     # request.bodyとすることでリクエストのメッセージボディだけを参照することができる。request.bodyはStringIOクラスという、文字列を操作するための様々なメソッドを提供しているクラスの値になっている。このままではメッセージボディの内容を解析できないので、StringIOクラスのreadメソッドを用いて、文字列として読み出し、body変数に代入している。
 
 
