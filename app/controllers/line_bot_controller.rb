@@ -64,4 +64,41 @@ class LineBotController < ApplicationController
     end
   end
 
+  def set_carousel(hotels)
+    bubbles = []
+    hotels.each do |hotel|
+      bubbles.push set_bubble(hotel[0]['hotelBasicInfo'])#pushはarrayクラスのメソッドで配列の末尾に要素を追加する機能がある。
+      # ①楽天トラベルキーワード検索APIから受け取ったホテル情報を一つずつset_bubbleメソッドに渡し、バブルコンテナを作成
+      # ②作成したバブルコンテナは、配列bubblesに順次追加される
+      # ③すべてのバブルコンテナを配列にまとめた、カルーセルコンテナを作成。
+    end
+    {
+      type: 'carousel',
+      contents: bubbles
+    }
+  end
+
+  def set_bubble(hotel)
+    {
+      type: 'bubble',#bubbleコンテナであることを宣言
+      hero: set_hero(hotel),
+      body: set_body(hotel),
+      footer: set_footer(hotel)
+    }
+  end
+
+  def set_hero(hotel)
+    {
+      type: 'image',
+      url: hotel['hotelImageUrl'],
+      size: 'full',
+      aspectRatio: '20:13',
+      aspectMode: 'cover',
+      action: {
+        type: 'uri',
+        uri:  hotel['hotelInformationUrl']
+      }
+    }
+  end
+
 end
